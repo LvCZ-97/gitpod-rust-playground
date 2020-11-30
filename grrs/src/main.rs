@@ -1,17 +1,18 @@
 use std::env::args;
 use std::path::PathBuf;
+use structopt::StructOpt;
 
+#[derive(StructOpt, Debug)]
 struct Cli {
-    path: PathBuf,
     pattern: String,
+
+    #[structopt(parse(from_os_str))]
+    path: PathBuf,
 }
 
 fn main() {
-    let pattern = args().nth(1).expect("no pattern given");
-    let path = args().nth(2).expect("no path given");
+    let opts = Cli::from_args();
 
-    let cli = Cli {
-        pattern: pattern,
-        path: PathBuf::from(path),
-    };
+    println!("{}", opts.pattern);
+    println!("{:?}", opts.path);
 }
