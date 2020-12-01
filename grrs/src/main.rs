@@ -18,7 +18,6 @@ fn main() -> Result<()> {
 
     let f = File::open(&opts.path)?;
     let mut reader = BufReader::new(f);
-    
 
     Ok(())
 }
