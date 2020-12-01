@@ -1,5 +1,6 @@
-use std::env::args;
 use std::path::PathBuf;
+use std::fs::read_to_string;
+
 use structopt::StructOpt;
 
 #[derive(StructOpt, Debug)]
@@ -12,7 +13,11 @@ struct Cli {
 
 fn main() {
     let opts = Cli::from_args();
-
-    println!("{}", opts.pattern);
-    println!("{:?}", opts.path);
+    
+    let content = read_to_string(&opts.path).expect("could not read file.");
+    for line in content.lines() {
+        if line.contains(&opts.pattern) {
+            println!("{}", line);
+        }
+    }
 }
