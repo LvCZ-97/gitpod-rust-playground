@@ -1,6 +1,6 @@
 use std::fs::File;
 use std::io::prelude::*;
-use std::io::BufReader;
+use std::io::{self, Write, BufWriter, BufReader};
 use std::path::PathBuf;
 
 use anyhow::{Context, Result};
@@ -14,6 +14,12 @@ struct Cli {
     path: PathBuf,
 }
 
+fn out(content: &str) {
+    let stdout = io::stdout();
+    let mut handle = BufWriter::new(stdout);
+    writeln!(handle, "{}", content);
+}
+
 fn main() -> Result<()> {
     let opts = Cli::from_args();
 
@@ -22,7 +28,7 @@ fn main() -> Result<()> {
 
     for line in f.lines().filter_map(|l| l.ok()) {
         if line.contains(&opts.pattern) {
-            println!("{}", line);
+            out(&line);
         }
     }
 
